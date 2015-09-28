@@ -30,7 +30,7 @@ cap = cv2.VideoCapture(vName)
 #+++++++++++++++++++++处理视频++++++++++++++++++++++
 while True:
     ret, frame = cap.read()
-    if frame == None:
+    if frame is None:
         print("视频读取完毕")
         break
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
