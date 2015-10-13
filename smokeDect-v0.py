@@ -6,10 +6,12 @@ __date__ = '15-9-28'
 import numpy as np
 import cv2
 
-vName = 'videos/CTC_FG.028_9.mpg'
-# CarLights1.avi
+vName = '../videos/CTC_FG.028_9.mpg'
 # CTC_FG.028_9.mpg
-# SmokeVideo.mp4
+# Homewood_BGsmokey.050_10.mpg
+# Heavenly_FG.052_09.mpg
+# CTC.BG.055_11.mpg
+
 
 cap = cv2.VideoCapture(vName)
 
@@ -32,14 +34,15 @@ while True:
     small_frame = cv2.resize(frame, (width / n, height / n), interpolation=cv2.INTER_CUBIC)
 
     fgmask = fgbg.apply(small_frame)
+    median = cv2.medianBlur(fgmask, 3)
 
-    GsBlur = cv2.GaussianBlur(fgmask, (5, 5), 0)
+    # GsBlur = cv2.GaussianBlur(fgmask, (5, 5), 0)
     # kernel = np.ones((5, 5), np.uint8)
-    # opening = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, kernel)
+    # opening = cv2.morphologyEx(median, cv2.MORPH_CLOSE, kernel)
 
     cv2.imshow("video", small_frame)
     cv2.imshow("frame", fgmask)
-    cv2.imshow("test", GsBlur)
+    cv2.imshow("test", median)
 
     k = cv2.waitKey(1) & 0xFF
     if k == 27:
