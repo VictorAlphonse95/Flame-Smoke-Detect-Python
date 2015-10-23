@@ -58,32 +58,11 @@ if __name__ == '__main__':
             else:
                 found_filtered.append(r)
         draw_detections(img, found)
-        # draw_detections(img, found_filtered, 3)
+        draw_detections(img, found_filtered, 3)
         print '%d (%d) found' % (len(found_filtered), len(found))
         cv2.imshow('img', img)
-        cv2.imwrite('../images/hog.png', img)
+        # cv2.imwrite('../images/hog.png', img)
         ch = 0xFF & cv2.waitKey()
         if ch == 27:
             break
     cv2.destroyAllWindows()
-
-# ../images/people3.png  -  found: [[293 440 107 214]
-#  [  0  48 286 654]
-#  [217  29 347 678]]
-# w: [[ 0.28246043]
-#  [ 1.18083268]
-#  [ 0.97528494]]
-# 2 (3) found
-
-
-
-
-
-
-
-
-
-
-
-
-
