@@ -23,7 +23,10 @@ def draw_motion_comp(vis, (x, y, w, h), angle, color):
 if __name__ == '__main__':
     import sys
 
-    video_src = "camera2.mov"
+    try:
+        video_src = sys.argv[1]
+    except:
+        video_src = 0
 
     cv2.namedWindow('motempl')
     visuals = ['input', 'frame_diff', 'motion_hist', 'grad_orient']
