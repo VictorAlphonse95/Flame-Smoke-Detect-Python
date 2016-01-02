@@ -4,29 +4,26 @@ __date__ = '15-11-10'
 
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 
-img = cv2.imread('digits.png')
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+vName = "../../videos/CTC_FG.028_9.mpg"
 
-cells = [np.hsplit(row, 100) for row in np.vsplit(gray, 50)]
-x = np.array(cells)
+cap = cv2.VideoCapture(vName)
+fgbg = cv2.createBackgroundSubtractorMOG2(detectShadows=False)
 
-train = x[:, :50].reshape(-1, 400).astype(np.float32)
-test = x[:, 50:100].reshape(-1, 400).astype(np.float32)
+while True:
+    ret, frame = cap.read()
+    height, width, ret = frame.shape
+    n = 3
+    small_frame = cv2.resize(frame, (width / n, height / n), interpolation=cv2.INTER_CUBIC)
+    fmask = fgbg.apply(small_frame)
 
-k = np.arange(10)
-train_labels = np.repeat(k, 250)[:, np.newaxis]
-test_labels = train_labels.copy()
+    opening_kernal = np.ones((3, 3), np.uint8)
+    fmask = cv2.morphologyEx(fmask, cv2.MORPH_OPEN, opening_kernal)
+    fmask = cv2.morphologyEx(fmask, cv2.MORPH_CLOSE, opening_kernal)
+    cv2.imshow('fmask', fmask)
+    k = cv2.waitKey(1) & 0xFF
+    if k == 27:
+        break
 
-knn = cv2.ml.KNearest_create()
-knn.train(train, cv2.ml.ROW_SAMPLE, train_labels)
-
-ret, result, neighbours, dist = knn.findNearest(test, k=5)
-
-matches = result==test_labels
-correct = np.count_nonzero(matches)
-accuracy = correct*100.0/result.size
-print accuracy
-
-cv2.HOGDescriptor()
+cap.release()
+cv2.destroyAllWindows()
