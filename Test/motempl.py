@@ -6,7 +6,7 @@ import video
 from common import nothing, clock, draw_str
 
 MHI_DURATION = 0.5
-DEFAULT_THRESHOLD = 32
+DEFAULT_THRESHOLD = 35
 MAX_TIME_DELTA = 0.25
 MIN_TIME_DELTA = 0.05
 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     try:
         video_src = sys.argv[1]
     except:
-        video_src = 0
+        video_src = '../../videos/side/daria_side.avi'
 
     cv2.namedWindow('motempl')
     visuals = ['input', 'frame_diff', 'motion_hist', 'grad_orient']
@@ -46,9 +46,11 @@ if __name__ == '__main__':
         gray_diff = cv2.cvtColor(frame_diff, cv2.COLOR_BGR2GRAY)
         thrs = cv2.getTrackbarPos('threshold', 'motempl')
         ret, motion_mask = cv2.threshold(gray_diff, thrs, 1, cv2.THRESH_BINARY)
+        print type(motion_mask[0][0])
         timestamp = clock()
         cv2.motempl.updateMotionHistory(motion_mask, motion_history, timestamp, MHI_DURATION)
-        mg_mask, mg_orient = cv2.motempl.calcMotionGradient(motion_history, MAX_TIME_DELTA, MIN_TIME_DELTA, apertureSize=5)
+        mg_mask, mg_orient = cv2.motempl.calcMotionGradient(motion_history, MAX_TIME_DELTA, MIN_TIME_DELTA,
+                                                            apertureSize=5)
         seg_mask, seg_bounds = cv2.motempl.segmentMotion(motion_history, timestamp, MAX_TIME_DELTA)
 
         visual_name = visuals[cv2.getTrackbarPos('visual', 'motempl')]
@@ -83,6 +85,6 @@ if __name__ == '__main__':
         cv2.imshow('motempl', vis)
 
         prev_frame = frame.copy()
-        if 0xFF & cv2.waitKey(5) == 27:
+        if 0xFF & cv2.waitKey(15) == 27:
             break
     cv2.destroyAllWindows()

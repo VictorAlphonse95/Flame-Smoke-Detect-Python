@@ -6,18 +6,16 @@ help_message = '''
 *******************************INFO************************************
 USAGE: click.py <image_names> ...
 
-Click the picture show the coordinate of the point, ESC to stop.
+Click the picture show the coordinate and BGR value of the point, ESC to stop.
 *****************************INFO_END**********************************
 '''
 
 
-def coordinate(event, x, y, flages, img):
+def coordinate(event, x, y, flags, para):
     if event == cv2.EVENT_LBUTTONUP:
         print "*" * 20
         print 'Coordinate: %s' % [x, y]
-
-        # 显示该点的像素值未能实现，关键点：如何返回获取鼠标的坐标，或者将img参数传给coordinate
-        # print img[y, x]
+        print 'BGR: %s' % img[x][y]
 
 
 if __name__ == '__main__':

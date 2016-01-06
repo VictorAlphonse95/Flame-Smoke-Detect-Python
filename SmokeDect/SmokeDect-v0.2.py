@@ -51,10 +51,7 @@ def split(img, cell_size, flatten=True):
 
 def zoom_down(frames, n):
     """
-    zoom down the image
-    :param frames:
-    :param n:
-    :return:
+    zoom down/up the image
     """
     h, w, r = frames.shape  # h:height w:width r:ret
     small_frames = cv2.resize(frame, (w / n, h / n), interpolation=cv2.INTER_CUBIC)
