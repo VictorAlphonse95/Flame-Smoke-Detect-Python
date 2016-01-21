@@ -49,14 +49,17 @@ if __name__ == '__main__':
     train_hog = []
     for img in train_data:
         hog = hog_feature(img)
+        print 'hog_values'
+        print hog
+        print '\n'
         train_hog.append(hog)
-    np.savetxt('0.1hog_train.txt', train_hog)
+    # np.savetxt('0.1hog_train.txt', train_hog)
     test_hog = []
     print test_image
     for img in test_image:
         hog = hog_feature(img)
         test_hog.append(hog)
-    np.savetxt('0.1hog_test.txt', test_hog)
+    # np.savetxt('0.1hog_test.txt', test_hog)
 
     train_hog = np.float32(train_hog)
     test_hog = np.float32(test_hog)

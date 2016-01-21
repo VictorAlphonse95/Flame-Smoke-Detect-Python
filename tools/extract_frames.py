@@ -3,7 +3,7 @@
 Extract Frames from video.
 
 USAGE
-    extractFrames.py [ <videos_src|-> <frames_path|-> ]     # '-' means default
+    extract_frames.py [ <videos_src|-> <frames_path|-> ]     # '-' means default
 
     default_video_src = '/home/stone/Code/FlameSmokeDetect/medias/videos/side/daria_side.avi'
     default_frames_path = '/home/stone/Pictures/extractFrames/'
@@ -19,7 +19,8 @@ import os
 
 print __doc__
 COUNT = 1
-default_video_src = '/home/stone/Code/FlameSmokeDetect/medias/videos/side/daria_side.avi'
+N_FRAME = 1    # 每隔N_FRAME帧保存一张图片
+default_video_src = '/home/stone/Code/FlameSmokeDetect/medias/videos/CTC_FG.028_9_320x240.avi'
 default_frames_path = '/home/stone/Pictures/extractFrames/'
 
 # 判断是否有视频参数并判断视频是否存在 ‘-’意思是使用默认参数
@@ -58,13 +59,14 @@ while True:
         break
 
     frame_name = '%sframe%d.jpg' % (frames_path, COUNT)
-    cv2.imwrite(frame_name, frames)
+    if (COUNT % N_FRAME) == 0:
+        cv2.imwrite(frame_name, frames)
 
     COUNT += 1
     cv2.imshow('frames', frames)
 
-    k = cv2.waitKey(50) & 0xFF
-    if k == '27':
+    k = cv2.waitKey(1) & 0xFF
+    if k == 27:
         break
 
 cv2.destroyAllWindows()

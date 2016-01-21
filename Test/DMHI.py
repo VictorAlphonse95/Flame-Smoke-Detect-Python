@@ -1,4 +1,8 @@
 # *^_^* coding:utf-8 *^_^*
+"""
+利用LK光流追踪测特征点，对特征点生成MHI，DMHI没有实现。缺陷：针对特征点不能检测目标轮廓
+"""
+
 __author__ = 'stone'
 __date__ = '16-1-5'
 
@@ -23,6 +27,19 @@ def zoom_down(frames, n):
 
 def clock():
     return cv2.getTickCount() / cv2.getTickFrequency()
+
+
+def draw_flow(img, flow, step=16):
+    h, w = img.shape[:2]
+    y, x = np.mgrid[step / 2:h:step, step / 2:w:step].reshape(2, -1).astype(int)
+    fx, fy = flow[y, x].T
+    lines = np.vstack([x, y, x + fx, y + fy]).T.reshape(-1, 2, 2)
+    lines = np.int32(lines + 0.5)
+    vis = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    cv2.polylines(vis, lines, 0, (0, 255, 0))
+    for (x1, y1), (x2, y2) in lines:
+        cv2.circle(vis, (x1, y1), 1, (0, 255, 0), -1)
+    return vis
 
 
 if __name__ == '__main__':
@@ -82,7 +99,7 @@ if __name__ == '__main__':
 
         # 把特征点放大作为silhouette
         for circle_center in p1:
-            motion_silhouette = cv2.circle(motion_silhouette, (circle_center[0][0], circle_center[0][1]), 3, 1, -1)
+            motion_silhouette = cv2.circle(motion_silhouette, (circle_center[0][0], circle_center[0][1]), 2, 1, -1)
 
         timestamp = clock()
 
@@ -94,6 +111,7 @@ if __name__ == '__main__':
         vis = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
 
         cv2.imshow('mhi', vis)
+        cv2.imshow('frame', frame)
 
         prev_frame = frame.copy()
         k = cv2.waitKey(50) & 0xFF

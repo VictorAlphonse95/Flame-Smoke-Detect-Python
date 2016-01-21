@@ -23,6 +23,8 @@ def draw_detections(img, rects, thickness=1):
 
 
 hog = cv2.HOGDescriptor()
+# hog.save('hog.xml')  # 将hog参数保存到xml
+# hog = cv2.HOGDescriptor('hog.xml')  # 从xml中读取参数
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 while True:
     ret, frame = cap.read()
