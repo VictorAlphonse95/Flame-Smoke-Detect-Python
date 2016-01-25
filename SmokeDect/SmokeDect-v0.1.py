@@ -44,6 +44,7 @@ if __name__ == '__main__':
     train_image = image_path(train_dir)
     test_image = image_path(test_dir)
     response = [1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1]
+    print(response)
     response = np.array(response)
     train_data = train_image[:]
     train_hog = []
@@ -69,6 +70,8 @@ if __name__ == '__main__':
     svm.setC(1)
     svm.setKernel(cv2.ml.SVM_RBF)
     svm.setType(cv2.ml.SVM_C_SVC)
+    print(train_hog)
     svm.train(train_hog, cv2.ml.ROW_SAMPLE, response)
+    print(svm.isTrained())
     result = svm.predict(test_hog)
     print result

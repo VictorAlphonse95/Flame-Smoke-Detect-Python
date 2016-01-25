@@ -13,7 +13,7 @@ import cv2
 import numpy as np
 
 VIDEO_SRC = '/home/stone/Code/FlameSmokeDetect/medias/videos/CTC_FG.028_9_320x240.avi'
-SIZE = (30, 30, 3)
+SIZE = (40, 40, 3)
 
 
 def get_clip(event, x, y, flags, param):
@@ -38,20 +38,23 @@ if __name__ == '__main__':
     while True:
         block_count = 0
         ret, frame = cap.read()
+        if frame is None:
+            print("Video playback is completed")
+            break
         cv2.imshow('frame', frame)
 
         print('current frame: %d' % frame_count)
         k = cv2.waitKey(0) & 0xFF
         if k == ord('s'):
             while True:
-                clip_name = 'clips/clip%d-%d.jpg' % (frame_count, block_count)
+                clip_name = 'clips/n-clip%d-%d.jpg' % (frame_count, block_count)
                 cv2.imwrite(clip_name, clip)
                 print('saved %s' % clip_name)
                 block_count += 1
                 sk = cv2.waitKey(0) & 0xFF
                 if sk == ord('n'):
                     break
-        if k == 27:
+        elif k == 27:
             break
         frame_count += 1
     cv2.destroyAllWindows()

@@ -1,16 +1,22 @@
 # *^_^* coding:utf-8 *^_^*
 """
-把视频统一输出为某一尺寸，或者原视频的n倍
+把视频统一输出为某一尺寸，或者原视频的n倍.
+也可以截取视频中的某一区域。
+保存格式为avi
 """
+
+from __future__ import print_function
+
 __author__ = 'stone'
 __date__ = '16-1-15'
 
 import cv2
+import numpy as np
 
 ZOOM_TIME = 3
 FRAME_SIZE = (320, 240)  # (WIDTH, HEIGHT)
-VIDEO_SRC = '/home/stone/Code/FlameSmokeDetect/medias/videos/CTC_FG.028_9.mpg'
-VIDEO_SAVE_PATH = 'new.avi'
+VIDEO_SRC = ''
+VIDEO_SAVE_PATH = ''
 
 
 def zoom_down(frames, time=None, size=None):
@@ -34,18 +40,20 @@ if __name__ == '__main__':
     out = cv2.VideoWriter(VIDEO_SAVE_PATH, fourcc, 20.0, FRAME_SIZE)
 
     while True:
+        new_frame = np.zeros((240, 320, 3), np.uint8)
         ret, frame = cap.read()
         if ret:
             frame = zoom_down(frame, size=FRAME_SIZE)
+            # new_frame[:, :] = frame[600:840, 1100:1420]  # 用于截取某一区域
 
             out.write(frame)
 
-            # cv2.imshow('frame', frame)
+            cv2.imshow('frame', frame)
 
             if cv2.waitKey(1) & 0xFF == 27:
                 break
         else:
-            print 'The End'
+            print('The End')
             break
 
     cap.release()
