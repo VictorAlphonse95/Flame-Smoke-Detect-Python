@@ -19,14 +19,14 @@ import os
 
 print __doc__
 COUNT = 1
-N_FRAME = 1    # 每隔N_FRAME帧保存一张图片
-default_video_src = '/home/stone/Code/FlameSmokeDetect/medias/videos/CTC_FG.028_9_320x240.avi'
+N_FRAME = 100    # 每隔N_FRAME帧保存一张图片
+default_video_src = ''
 default_frames_path = '/home/stone/Pictures/extractFrames/'
 
 # 判断是否有视频参数并判断视频是否存在 ‘-’意思是使用默认参数
 try:
     video_src = sys.argv[1]
-except:
+except IndexError:
     video_src = default_video_src
 
 if video_src == '-':
@@ -54,7 +54,7 @@ cap = cv2.VideoCapture(video_src)
 while True:
     ret, frames = cap.read()
     if frames is None:
-        print 'The End!'
+        print 'The End!!!'
         print 'Total frames: %d' % COUNT
         break
 

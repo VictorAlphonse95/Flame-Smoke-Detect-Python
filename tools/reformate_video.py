@@ -14,7 +14,7 @@ import cv2
 import numpy as np
 
 ZOOM_TIME = 3
-FRAME_SIZE = (320, 240)  # (WIDTH, HEIGHT)
+FRAME_SIZE = (100, 80)  # (WIDTH, HEIGHT)
 VIDEO_SRC = ''
 VIDEO_SAVE_PATH = ''
 
@@ -40,15 +40,16 @@ if __name__ == '__main__':
     out = cv2.VideoWriter(VIDEO_SAVE_PATH, fourcc, 20.0, FRAME_SIZE)
 
     while True:
-        new_frame = np.zeros((240, 320, 3), np.uint8)
+        new_frame = np.zeros((FRAME_SIZE[1], FRAME_SIZE[0], 3), np.uint8)
         ret, frame = cap.read()
         if ret:
-            frame = zoom_down(frame, size=FRAME_SIZE)
-            # new_frame[:, :] = frame[600:840, 1100:1420]  # 用于截取某一区域
+            # frame = zoom_down(frame, size=FRAME_SIZE)  # 用于缩放视频
+            # out.write(frame)
+            # cv2.imshow('frame', frame)
 
-            out.write(frame)
-
-            cv2.imshow('frame', frame)
+            new_frame[:, :] = frame[80:160, 100:200]  # 用于截取某一区域
+            out.write(new_frame)
+            cv2.imshow('frame', new_frame)
 
             if cv2.waitKey(1) & 0xFF == 27:
                 break

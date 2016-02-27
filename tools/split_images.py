@@ -39,7 +39,7 @@ if __name__ == '__main__':
         block_count = 0
         ret, frame = cap.read()
         if frame is None:
-            print("Video playback is completed")
+            print("The End!!!")
             break
         cv2.imshow('frame', frame)
 

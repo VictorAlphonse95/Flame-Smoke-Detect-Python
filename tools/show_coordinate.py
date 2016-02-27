@@ -10,6 +10,8 @@ Click the picture show the coordinate and BGR value of the point, ESC to stop.
 *****************************INFO_END**********************************
 '''
 
+default_img_src = '/home/stone/Pictures/extractFrames/frame600.jpg'
+
 
 def coordinate(event, x, y, flags, para):
     if event == cv2.EVENT_LBUTTONUP:
@@ -20,25 +22,16 @@ def coordinate(event, x, y, flags, para):
 
 if __name__ == '__main__':
     import sys
-    from glob import glob
-    import itertools as it
 
     print help_message
 
-    img = None
+    try:
+        img_src = sys.argv[1]
+    except:
+        img_src = default_img_src
 
-    for fn in it.chain(*map(glob, sys.argv[1:])):
-        print 'the picture:',
-        print fn
-        try:
-            img = cv2.imread(fn)
-            print 'image'
-            if img is None:
-                print 'Failed to load image file:', fn
-                continue
-        except:
-            print 'loading error'
-            continue
+    img = cv2.imread(img_src)
+
     if img is None:
         print 'please input the right order !!!\n'
     else:

@@ -1,6 +1,7 @@
 # *^_^* coding:utf-8 *^_^*
 """
 SmokeDect-v0.2
+检测方法：用MOG2提取运动区域，分小块提取hog特征，用svm分类
 """
 
 from __future__ import print_function  # use print()
@@ -14,7 +15,7 @@ from time import time
 import os
 
 DEBUG_MOD = True
-vName = '../medias/videos/CTC_FG.028_9_320x240.avi'
+vName = '/home/stone/Code/FlameSmokeDetect/medias/videos/CTC.BG.055_11_320x240.avi'
 train_directory = '/home/stone/Code/FlameSmokeDetect/tools/clips'
 BLOCK_SIZE = 40
 
@@ -121,16 +122,16 @@ if __name__ == '__main__':
     cap = cv2.VideoCapture(vName)
     fgbg = cv2.createBackgroundSubtractorMOG2(detectShadows=False)
 
-    while True:
+    while 1:
         result = []
         ret, frame = cap.read()
         if frame is None:
-            print("Video playback is completed")
+            print("The End!!!")
             break
 
-        if count < 500:
-            count += 1
-            continue
+        # if count < 500:
+        #     count += 1
+        #     continue
 
         frame_copy = frame.copy()
         frame = cv2.GaussianBlur(frame, (5, 5), 2)
@@ -154,7 +155,7 @@ if __name__ == '__main__':
             x, y, w, h = cv2.boundingRect(cnt)
 
             if w < BLOCK_SIZE or h < BLOCK_SIZE:
-                continue
+                pass
             else:
                 cells = split(frame, (BLOCK_SIZE, BLOCK_SIZE), flatten=False)
                 cells_x_1 = x / BLOCK_SIZE
@@ -183,7 +184,7 @@ if __name__ == '__main__':
         frame_and = cv2.bitwise_and(frame, frame, mask=fmask)
 
         count += 1
-        k = cv2.waitKey(0) & 0xFF
+        k = cv2.waitKey(100) & 0xFF
         if k == 27:
             break
 
